@@ -12,6 +12,7 @@ export default function Protected({ children, authentication = true }) {
     } else if (!authentication && authStatus !== authentication) {
       navigate("/");
     }
+    setLoader(false);
   }, [authentication, authStatus, navigate]);
-  return <div>AuthLayout</div>;
+  return loader ? <h1>Loading...</h1> : <>{children}</>;
 }
