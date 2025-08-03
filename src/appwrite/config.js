@@ -1,7 +1,7 @@
 import conf from "../conf/conf";
 import { Client, Databases, ID, Storage, Query } from "appwrite";
 
-export class DatabaseService {
+export class DatabaseServices {
   client = new Client();
   databases;
   bucket;
@@ -33,6 +33,7 @@ export class DatabaseService {
       throw error;
     }
   }
+  
   async updatePost(slug, { title, content, featuredImage, status }) {
     // slug refer to ID
     try {
@@ -112,5 +113,5 @@ export class DatabaseService {
   }
 }
 
-const DatabaseService = new DatabaseService();
+const DatabaseService = new DatabaseServices();
 export default DatabaseService;

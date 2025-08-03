@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import React, { useCallback } from "react";
 import { useForm } from "react-hook-form";
+import { Button, Input, RTE, Select } from "..";
+import appwriteService from "../../appwrite/config";
 import { useNavigate } from "react-router-dom";
-import DatabaseService from "../../appwrite/config";
-import { Button, Input, Select, RTE } from '../index.js'
-const PostForm = ({ post }) => {
-  const { register, handleSubmit, watch, setValue, getValues, control } = useForm({
+import { useSelector } from "react-redux";
+
+export default function PostForm({ post }) {
+  const { register, handleSubmit, watch, setValue, control, getValues } = useForm({
     defaultValues: {
       title: post?.title || "",
       slug: post?.$id || "",
@@ -13,36 +14,43 @@ const PostForm = ({ post }) => {
       status: post?.status || "active",
     },
   });
+
   const navigate = useNavigate();
   const userData = useSelector((state) => state.auth.userData);
+  console.log(`this is user data :`, userData);
+
   const submit = async (data) => {
     if (post) {
-      const file = data.image[0]
-        ? DatabaseService.uploadFile(data.image[0])
-        : null;
-      if (file) DatabaseService.deleteFile(post.featuredImage);
-      const dbPost = DatabaseService.updatePost(post.$id, {
+      const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null;
+
+      if (file) {
+        appwriteService.deleteFile(post.featuredImage);
+      }
+
+      const dbPost = await appwriteService.updatePost(post.$id, {
         ...data,
         featuredImage: file ? file.$id : undefined,
-      })
+      });
+
       if (dbPost) {
         navigate(`/post/${dbPost.$id}`);
       }
     } else {
-      const file = data.image[0]
-        ? DatabaseService.uploadFile(data.image[0])
-        : null;
+      const file = await appwriteService.uploadFile(data.image[0]);
+      console.log(`this is file: ${file.$id}`)
+
       if (file) {
         const fileId = file.$id;
-        data.featuredImage = fileId
-        const dbPost = DatabaseService.createPost({ ...data, userId: userData.$id })
+        data.featuredImage = fileId;
+        console.log('data: ', data)
+        const dbPost = await appwriteService.createPost({ ...data, userId: userData.$id });
+
         if (dbPost) {
           navigate(`/post/${dbPost.$id}`);
         }
       }
     }
   };
-
 
   const slugTransform = useCallback((value) => {
     if (value && typeof value === "string")
@@ -54,7 +62,6 @@ const PostForm = ({ post }) => {
 
     return "";
   }, []);
-
 
   React.useEffect(() => {
     const subscription = watch((value, { name }) => {
@@ -114,7 +121,5 @@ const PostForm = ({ post }) => {
         </Button>
       </div>
     </form>
-  )
-};
-
-export default PostForm;
+  );
+}

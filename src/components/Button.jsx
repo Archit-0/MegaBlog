@@ -1,7 +1,7 @@
 import React from "react";
 
 const Button = ({
-  childern,
+  children,
   classname = "",
   type = "button",
   bgColor = "bg-blue-600",
@@ -14,7 +14,7 @@ const Button = ({
       {...props}
       className={`px-4 py-2 rounded-lg ${classname} ${bgColor} ${textColor}`}
     >
-      {childern}
+      {children}
     </button>
   );
 };

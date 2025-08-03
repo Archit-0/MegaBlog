@@ -10,7 +10,9 @@ import Logo from "./Logo";
 import Select from "./Select.jsx";
 import {RTE} from  './RTE.jsx'
 import Signup from "./Signup.jsx";
-import Login from './'
+import Login from './Login.jsx'
+import PostCard from "./PostCard.jsx";
+import AuthLayout from './AuthLayout.jsx'
 
 
 export {
@@ -26,5 +28,7 @@ export {
   RTE,
   PostForm,
   Signup,
-  Login
+  Login,
+  PostCard,
+  AuthLayout
 };

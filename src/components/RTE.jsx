@@ -2,7 +2,7 @@ import React from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { Controller } from "react-hook-form";
 
-export const RTE = ({ lebel, name, control, initialValue = "" }) => {
+export const RTE = ({ lebel, name, control, defaultValue = "" }) => {
   return (
     <div className="w-full">
       {lebel && <lebel className="inline-block mb-1 pl-1">{lebel}</lebel>}
@@ -11,7 +11,8 @@ export const RTE = ({ lebel, name, control, initialValue = "" }) => {
         control={control}
         render={({ field: { onChange } }) => (
           <Editor
-            initialValue={initialValue}
+            apiKey="84nfjrb4rq3e6iqyj1hptkkz3fe91m0f6irajbxn1vfw1ox5"
+            initialValue={defaultValue}
             init={{
               initialValue: defaultValue,
               height: 500,

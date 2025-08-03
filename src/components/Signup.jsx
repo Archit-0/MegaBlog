@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import authService from "../appwrite/auth.js";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Button, Input, Logo } from "./index.js";
 import { useForm } from "react-hook-form";
 import { login as authLogin } from "../store/authSlice.js";
 
-const Signup = (data) => {
+const Signup = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
   const [error, setError] = useState("");
+
   const onSubmit = async (data) => {
     try {
       setError("");
@@ -28,9 +29,7 @@ const Signup = (data) => {
 
   return (
     <div className="flex items-center justify-center">
-      <div
-        className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`}
-      >
+      <div className="mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10">
         <div className="mb-2 flex justify-center">
           <span className="inline-block w-full max-w-[100px]">
             <Logo width="100%" />
@@ -52,28 +51,28 @@ const Signup = (data) => {
         <form onSubmit={handleSubmit(onSubmit)} className="mt-8">
           <div className="space-y-5">
             <Input
-              label="Full Name: "
+              label="Full Name:"
               placeholder="Enter your full name"
               {...register("name", {
                 required: true,
-                minLength: 21,
+                minLength: 3,
               })}
             />
             <Input
-              label="Email: "
+              label="Email:"
               placeholder="Enter your email"
               type="email"
               {...register("email", {
                 required: true,
                 validate: {
-                  matchPatern: (value) =>
+                  matchPattern: (value) =>
                     /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
                     "Email address must be a valid address",
                 },
               })}
             />
             <Input
-              label="Password: "
+              label="Password:"
               type="password"
               placeholder="Enter your password"
               {...register("password", {
